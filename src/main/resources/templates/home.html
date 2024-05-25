@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" xmlns:th="http:/www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div th:replace="header :: header"></div>
+<p>
+    Merhaba 123232323 <h1 th:text="${username}"></h1>
+</p>
+<h1 th:text="${username}"></h1>
+<ul th:each="prod: ${list}">
+    <li th:text="${prod}"></li>
+</ul>
+<script src="http://localhost:35729/livereload.js"></script>
+<div th:replace="footer :: footer"></div>
+
+</body>
+</html>
