@@ -5,6 +5,7 @@ import com.myworks.mywork.models.Todo;
 import com.myworks.mywork.response.BaseResponse;
 import com.myworks.mywork.services.MyApiService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -25,7 +27,17 @@ public class MyApiController {
         this.myApiService = myApiService;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<BaseResponse<Todo>> getById(@PathVariable("id") @Valid @NotNull UUID id){
+        return  new ResponseEntity<BaseResponse<Todo>>(BaseResponse.success(myApiService.getTodoById(id)),HttpStatus.OK);
+    }
 
+    @GetMapping("/list")
+    public ResponseEntity<BaseResponse<List<Todo>>> getAllTodos() {
+        List<Todo> todos = myApiService.getTodos();
+        return new ResponseEntity<BaseResponse<List<Todo>>>(BaseResponse.success(todos), HttpStatus.OK);
+
+    }
 
 
     @PostMapping("/create")
