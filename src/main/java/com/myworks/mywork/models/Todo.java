@@ -6,11 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
-
-import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,9 +15,11 @@ import java.util.UUID;
 public class Todo extends BaseEntity {
     @NotNull(message = "Cannot be null")
     @Size(min = 10,max = 150,message = "Min 10 Max 150")
-    @NotEmpty(message = "Boş Bıraklıamaz")
+    @NotEmpty(message = "Cannot be empty")
     private String title;
     @NotNull(message = "Cannot be null")
     @Size(min = 5,max = 150,message = "Min 5 Max 150")
     private String text;
+    @NotNull(message = "Cannot be null")
+    private Boolean completed;
 }

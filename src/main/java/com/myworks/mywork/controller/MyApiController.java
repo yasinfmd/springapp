@@ -2,13 +2,17 @@ package com.myworks.mywork.controller;
 
 
 import com.myworks.mywork.models.Todo;
+import com.myworks.mywork.response.BaseResponse;
 import com.myworks.mywork.services.MyApiService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/todos")
@@ -21,15 +25,12 @@ public class MyApiController {
         this.myApiService = myApiService;
     }
 
-    @GetMapping("/list")
-    public List<Todo> getAllTodos() {
-        return myApiService.getAllTodos();
-    }
 
 
 
     @PostMapping("/create")
-    public  Todo createTodo(@RequestBody @Valid Todo todo){
-        return  myApiService.createTodo(todo);
+    public ResponseEntity<BaseResponse> createTodo(@RequestBody @Valid Todo todo) {
+        Todo createdTodo = myApiService.createTodo(todo);
+        return new ResponseEntity<>(BaseResponse.success(createdTodo), HttpStatus.CREATED);
     }
 }

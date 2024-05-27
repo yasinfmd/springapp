@@ -24,4 +24,8 @@ public class BaseEntity {
 
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
+
+    @Version
+    private  int version;
+
 }

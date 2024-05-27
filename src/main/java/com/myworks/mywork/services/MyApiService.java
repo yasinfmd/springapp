@@ -5,17 +5,17 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
-@Service
-public class MyApiService {
+public interface MyApiService {
 
-    public Todo createTodo(Todo todo){
-        return  todo;
-    }
 
-    public List<Todo> getAllTodos(){
-            return List.of();
-    }
+
+    Boolean deleteUserById(UUID uuid);
+    Todo updateTodoById(UUID uuid, Todo todo);
+    Todo getTodoById(UUID uuid);
+    List<Todo> getTodos();
+    Todo createTodo(Todo todo);
 
 
 }
