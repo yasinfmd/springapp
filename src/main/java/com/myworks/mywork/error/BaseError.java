@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,7 +15,9 @@ public class BaseError  {
     private boolean isSuccess;
     private String code;
     private String message;
-    public  static BaseError of(String code,String message){
-        return  new BaseError(false,code,message);
+    private LocalDateTime timestamp;
+    private String path;
+    public  static BaseError of(String code,String message,String path){
+        return  new BaseError(false,code,message,LocalDateTime.now(),path);
     }
 }

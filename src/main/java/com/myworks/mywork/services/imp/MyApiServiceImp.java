@@ -1,5 +1,6 @@
 package com.myworks.mywork.services.imp;
 
+import com.myworks.mywork.exception.RecordNotFoundException;
 import com.myworks.mywork.models.Todo;
 import com.myworks.mywork.repository.TodoRepository;
 import com.myworks.mywork.services.MyApiService;
@@ -9,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -29,7 +29,7 @@ public class MyApiServiceImp implements MyApiService {
     }
 
     @Override
-    public Boolean deleteUserById(UUID uuid) {
+    public Boolean deleteTodoById(UUID uuid) {
         log.info("Find todo by id : " + uuid);
         todoRepository.deleteById(uuid);
         return true;
@@ -38,7 +38,7 @@ public class MyApiServiceImp implements MyApiService {
     @Override
     public Todo updateTodoById(UUID uuid, Todo todo) {
         log.info("Find todo by id : " + uuid);
-        Todo updateTodo = todoRepository.findById(uuid).orElseThrow(() -> new RuntimeException("Todo not found"));
+        Todo updateTodo = todoRepository.findById(uuid).orElseThrow(() -> new RecordNotFoundException("Todo not found"));
         log.info("Create Todo  with params" + String.valueOf(todo));
         return todoRepository.save(todo);
     }
@@ -46,7 +46,7 @@ public class MyApiServiceImp implements MyApiService {
     @Override
     public Todo getTodoById(UUID uuid) {
         log.info("Find todo by id : " + uuid);
-        return todoRepository.findById(uuid).orElseThrow(()->    new RuntimeException("Todo not found"));
+        return todoRepository.findById(uuid).orElseThrow(()->    new RecordNotFoundException("Todo not found"));
     }
 
     @Override

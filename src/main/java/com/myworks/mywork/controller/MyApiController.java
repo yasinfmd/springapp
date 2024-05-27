@@ -27,14 +27,25 @@ public class MyApiController {
     public MyApiController(MyApiService myApiService) {
         this.myApiService = myApiService;
     }
-    @GetMapping("/getTodoByName")
-    public ResponseEntity<BaseResponse<List<Todo>>> getTodosByName(@RequestParam @Valid @NotNull @NotEmpty  String text){
-        return new ResponseEntity<BaseResponse<List<Todo>>>(BaseResponse.success(myApiService.getTodosByName(text)),HttpStatus.OK);
+
+    @PutMapping("/updateById/{id}")
+    public ResponseEntity<BaseResponse<Todo>> updateTodoById(@PathVariable("id") @Valid @NotNull UUID id, @RequestBody @Valid Todo todo) {
+        return new ResponseEntity<BaseResponse<Todo>>(BaseResponse.success(myApiService.updateTodoById(id, todo)), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteById/{id}")
+    public ResponseEntity<BaseResponse<Boolean>> deleteTodoById(@PathVariable("id") @Valid @NotNull UUID id) {
+        return new ResponseEntity<BaseResponse<Boolean>>(BaseResponse.success(myApiService.deleteTodoById(id)), HttpStatus.OK);
+    }
+
+    @GetMapping("/getTodosByName")
+    public ResponseEntity<BaseResponse<List<Todo>>> getTodosByName(@RequestParam @Valid @NotNull @NotEmpty String text) {
+        return new ResponseEntity<BaseResponse<List<Todo>>>(BaseResponse.success(myApiService.getTodosByName(text)), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BaseResponse<Todo>> getById(@PathVariable("id") @Valid @NotNull UUID id){
-        return  new ResponseEntity<BaseResponse<Todo>>(BaseResponse.success(myApiService.getTodoById(id)),HttpStatus.OK);
+    public ResponseEntity<BaseResponse<Todo>> getById(@PathVariable("id") @Valid @NotNull UUID id) {
+        return new ResponseEntity<BaseResponse<Todo>>(BaseResponse.success(myApiService.getTodoById(id)), HttpStatus.OK);
     }
 
     @GetMapping("/list")
@@ -46,8 +57,8 @@ public class MyApiController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<BaseResponse> createTodo(@RequestBody @Valid Todo todo) {
+    public ResponseEntity<BaseResponse<Todo>> createTodo(@RequestBody @Valid Todo todo) {
         Todo createdTodo = myApiService.createTodo(todo);
-        return new ResponseEntity<>(BaseResponse.success(createdTodo), HttpStatus.CREATED);
+        return new ResponseEntity<BaseResponse<Todo>>(BaseResponse.success(createdTodo), HttpStatus.CREATED);
     }
 }

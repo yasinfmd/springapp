@@ -11,7 +11,7 @@ public interface MyApiService {
 
 
     List<Todo> getTodosByName(String text);
-    Boolean deleteUserById(UUID uuid);
+    Boolean deleteTodoById(UUID uuid);
     Todo updateTodoById(UUID uuid, Todo todo);
     Todo getTodoById(UUID uuid);
     List<Todo> getTodos();
