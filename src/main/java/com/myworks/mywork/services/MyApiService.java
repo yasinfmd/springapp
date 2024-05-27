@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface MyApiService {
 
 
-
+    List<Todo> getTodosByName(String text);
     Boolean deleteUserById(UUID uuid);
     Todo updateTodoById(UUID uuid, Todo todo);
     Todo getTodoById(UUID uuid);

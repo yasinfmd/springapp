@@ -5,6 +5,7 @@ import com.myworks.mywork.models.Todo;
 import com.myworks.mywork.response.BaseResponse;
 import com.myworks.mywork.services.MyApiService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,10 @@ public class MyApiController {
     @Autowired
     public MyApiController(MyApiService myApiService) {
         this.myApiService = myApiService;
+    }
+    @GetMapping("/getTodoByName")
+    public ResponseEntity<BaseResponse<List<Todo>>> getTodosByName(@RequestParam @Valid @NotNull @NotEmpty  String text){
+        return new ResponseEntity<BaseResponse<List<Todo>>>(BaseResponse.success(myApiService.getTodosByName(text)),HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

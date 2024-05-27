@@ -23,6 +23,12 @@ public class MyApiServiceImp implements MyApiService {
     }
 
     @Override
+    public List<Todo> getTodosByName(String text) {
+        log.info("Find todos by text : " + text);
+        return todoRepository.findByTextContaining(text);
+    }
+
+    @Override
     public Boolean deleteUserById(UUID uuid) {
         log.info("Find todo by id : " + uuid);
         todoRepository.deleteById(uuid);
