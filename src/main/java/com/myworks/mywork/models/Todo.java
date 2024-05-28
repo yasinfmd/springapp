@@ -26,6 +26,7 @@ public class Todo extends BaseEntity {
     private Boolean completed;
 
 
-    @OneToOne(mappedBy = "todo", orphanRemoval = true, cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @JoinColumn(name = "todo_detail_id", referencedColumnName = "id")
     private TodoDetail todoDetail;
 }

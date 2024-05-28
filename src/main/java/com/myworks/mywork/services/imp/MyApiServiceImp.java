@@ -70,7 +70,6 @@ public class MyApiServiceImp implements MyApiService {
             todo.setCompleted(dto.completed());
             TodoDetail todoDetail=new TodoDetail();
             TodoDetailDTO todoDetailDTO = dto.todoDetail();
-            todoDetail.setTodo(todo);
             todoDetail.setDetail(todoDetailDTO.detail());
             todo.setTodoDetail(todoDetail);
 

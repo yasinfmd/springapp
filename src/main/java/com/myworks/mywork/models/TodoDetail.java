@@ -21,9 +21,6 @@ public class TodoDetail extends  BaseEntity {
     @Size(min = 1, max = 255, message = "Not 1 ile 255 karakter arasında olmalıdır")
     private  String detail;
 
-    @JsonBackReference
-    @OneToOne
-    @JoinColumn(name = "todo_id", referencedColumnName = "id")
-    private Todo todo;
+
 
 }
