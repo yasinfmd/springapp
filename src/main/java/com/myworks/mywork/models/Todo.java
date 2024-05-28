@@ -6,8 +6,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -22,4 +24,8 @@ public class Todo extends BaseEntity {
     private String text;
     @NotNull(message = "Cannot be null")
     private Boolean completed;
+
+
+    @OneToOne(mappedBy = "todo", orphanRemoval = true, cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private TodoDetail todoDetail;
 }

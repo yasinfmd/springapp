@@ -1,6 +1,7 @@
 package com.myworks.mywork.controller;
 
 
+import com.myworks.mywork.dto.request.TodoDTO;
 import com.myworks.mywork.models.Todo;
 import com.myworks.mywork.response.BaseResponse;
 import com.myworks.mywork.services.MyApiService;
@@ -57,7 +58,7 @@ public class MyApiController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<BaseResponse<Todo>> createTodo(@RequestBody @Valid Todo todo) {
+    public ResponseEntity<BaseResponse<Todo>> createTodo(@RequestBody @Valid TodoDTO todo) {
         Todo createdTodo = myApiService.createTodo(todo);
         return new ResponseEntity<BaseResponse<Todo>>(BaseResponse.success(createdTodo), HttpStatus.CREATED);
     }

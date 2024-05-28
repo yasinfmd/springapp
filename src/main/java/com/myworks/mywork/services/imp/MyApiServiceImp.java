@@ -1,7 +1,10 @@
 package com.myworks.mywork.services.imp;
 
+import com.myworks.mywork.dto.request.TodoDTO;
+import com.myworks.mywork.dto.request.TodoDetailDTO;
 import com.myworks.mywork.exception.RecordNotFoundException;
 import com.myworks.mywork.models.Todo;
+import com.myworks.mywork.models.TodoDetail;
 import com.myworks.mywork.repository.TodoRepository;
 import com.myworks.mywork.services.MyApiService;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +52,7 @@ public class MyApiServiceImp implements MyApiService {
         return todoRepository.findById(uuid).orElseThrow(()->    new RecordNotFoundException("Todo not found"));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Todo> getTodos() {
         log.info("Todo List access");
@@ -57,9 +61,19 @@ public class MyApiServiceImp implements MyApiService {
 
     @Override
     @Transactional
-    public Todo createTodo(Todo todo) {
-        log.info("Create Todo  with params" + String.valueOf(todo));
+    public Todo createTodo(TodoDTO dto) {
+        log.info("Create Todo  with params" + String.valueOf(dto));
         try {
+            Todo todo = new Todo();
+            todo.setTitle(dto.title());
+            todo.setText(dto.text());
+            todo.setCompleted(dto.completed());
+            TodoDetail todoDetail=new TodoDetail();
+            TodoDetailDTO todoDetailDTO = dto.todoDetail();
+            todoDetail.setTodo(todo);
+            todoDetail.setDetail(todoDetailDTO.detail());
+            todo.setTodoDetail(todoDetail);
+
             return todoRepository.save(todo);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
