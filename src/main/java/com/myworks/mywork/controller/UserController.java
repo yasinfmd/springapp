@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<BaseResponse<User>> register(@RequestBody @Valid UserDTO userDTO){
-        return  new ResponseEntity<BaseResponse<User>>(BaseResponse.success(userService.register(userDTO)), HttpStatus.OK);
+    public ResponseEntity<BaseResponse<Boolean>> register(@RequestBody @Valid UserDTO userDTO){
+        return  new ResponseEntity<BaseResponse<Boolean>>(BaseResponse.success(userService.register(userDTO)), HttpStatus.OK);
     }
 }

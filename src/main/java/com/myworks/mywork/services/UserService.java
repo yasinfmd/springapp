@@ -4,5 +4,5 @@ import com.myworks.mywork.dto.request.UserDTO;
 import com.myworks.mywork.models.User;
 
 public interface UserService  {
-    User register(UserDTO userDTO);
+    Boolean register(UserDTO userDTO);
 }

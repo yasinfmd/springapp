@@ -5,6 +5,7 @@ import com.myworks.mywork.dto.request.TodoDetailDTO;
 import com.myworks.mywork.exception.RecordNotFoundException;
 import com.myworks.mywork.models.Todo;
 import com.myworks.mywork.models.TodoDetail;
+import com.myworks.mywork.models.User;
 import com.myworks.mywork.repository.TodoRepository;
 import com.myworks.mywork.services.TodoService;
 import lombok.extern.slf4j.Slf4j;
@@ -42,8 +43,11 @@ public class TodoServiceImp implements TodoService {
     public Todo updateTodoById(UUID uuid, Todo todo) {
         log.info("Find todo by id : " + uuid);
         Todo updateTodo = todoRepository.findById(uuid).orElseThrow(() -> new RecordNotFoundException("Todo not found"));
+        updateTodo.setText(todo.getText());
+        updateTodo.setTitle(todo.getTitle());
+        updateTodo.setCompleted(todo.getCompleted());
         log.info("Create Todo  with params" + String.valueOf(todo));
-        return todoRepository.save(todo);
+        return todoRepository.save(updateTodo);
     }
 
     @Override
@@ -72,6 +76,9 @@ public class TodoServiceImp implements TodoService {
             TodoDetailDTO todoDetailDTO = dto.todoDetail();
             todoDetail.setDetail(todoDetailDTO.detail());
             todo.setTodoDetail(todoDetail);
+            User user = new User();
+            user.setId(dto.userId());
+            todo.setUser(user);
 
             return todoRepository.save(todo);
         } catch (Exception e) {

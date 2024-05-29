@@ -6,14 +6,16 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.UUID;
+
 public record TodoDTO(
         @NotNull(message = "Title Cannot be null")
-        @Size(min = 10,max = 150,message = "Title Min 3 Max 150")
+        @Size(min = 10, max = 150, message = "Title Min 3 Max 150")
         @NotEmpty(message = "Title Cannot be empty")
         String title,
 
         @NotNull(message = "Cannot be null")
-        @Size(min = 5,max = 150,message = "Min 5 Max 150")
+        @Size(min = 5, max = 150, message = "Min 5 Max 150")
         String text,
 
         @NotNull(message = "Completed Cannot be null")
@@ -21,5 +23,9 @@ public record TodoDTO(
 
         @NotNull(message = "TodoDetail cannot be null")
         @Valid
-        TodoDetailDTO todoDetail
-) {}
+        TodoDetailDTO todoDetail,
+        @NotNull(message = "UserId Cannot be null")
+        @NotEmpty(message = "UserId Cannot be empty")
+        UUID userId
+) {
+}
