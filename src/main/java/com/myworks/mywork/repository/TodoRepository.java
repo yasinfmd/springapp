@@ -13,4 +13,7 @@ import java.util.UUID;
 @Repository
 public interface TodoRepository extends JpaRepository<Todo, UUID> {
     List<Todo> findByTextContaining(String searchText);
+
+    List<Todo>  findByUserId(UUID userId);
+
 }

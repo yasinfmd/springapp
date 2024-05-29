@@ -25,7 +25,6 @@ public record TodoDTO(
         @Valid
         TodoDetailDTO todoDetail,
         @NotNull(message = "UserId Cannot be null")
-        @NotEmpty(message = "UserId Cannot be empty")
         UUID userId
 ) {
 }

@@ -1,6 +1,7 @@
 package com.myworks.mywork.services;
 
 import com.myworks.mywork.dto.request.TodoDTO;
+import com.myworks.mywork.dto.response.TodoListDTO;
 import com.myworks.mywork.models.Todo;
 
 import java.util.List;
@@ -13,8 +14,10 @@ public interface TodoService {
     Boolean deleteTodoById(UUID uuid);
     Todo updateTodoById(UUID uuid, Todo todo);
     Todo getTodoById(UUID uuid);
-    List<Todo> getTodos();
+    List<TodoListDTO> getTodos();
 
 
-    Todo createTodo(TodoDTO dto);
+    TodoListDTO createTodo(TodoDTO dto);
+
+    List<TodoListDTO> getTodosByUserId(UUID id);
 }

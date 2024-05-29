@@ -2,6 +2,7 @@ package com.myworks.mywork.controller;
 
 
 import com.myworks.mywork.dto.request.TodoDTO;
+import com.myworks.mywork.dto.response.TodoListDTO;
 import com.myworks.mywork.models.Todo;
 import com.myworks.mywork.response.BaseResponse;
 import com.myworks.mywork.services.TodoService;
@@ -50,16 +51,20 @@ public class TodoController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<BaseResponse<List<Todo>>> getAllTodos() {
-        List<Todo> todos = todoService.getTodos();
-        return new ResponseEntity<BaseResponse<List<Todo>>>(BaseResponse.success(todos), HttpStatus.OK);
+    public ResponseEntity<BaseResponse<List<TodoListDTO>>> getAllTodos() {
+        return new ResponseEntity<BaseResponse<List<TodoListDTO>>>(BaseResponse.success(todoService.getTodos()), HttpStatus.OK);
 
     }
 
 
     @PostMapping("/create")
-    public ResponseEntity<BaseResponse<Todo>> createTodo(@RequestBody @Valid TodoDTO todo) {
-        Todo createdTodo = todoService.createTodo(todo);
-        return new ResponseEntity<BaseResponse<Todo>>(BaseResponse.success(createdTodo), HttpStatus.CREATED);
+    public ResponseEntity<BaseResponse<TodoListDTO>> createTodo(@RequestBody @Valid TodoDTO todo) {
+        return new ResponseEntity<BaseResponse<TodoListDTO>>(BaseResponse.success(todoService.createTodo(todo)), HttpStatus.CREATED);
     }
+
+    @GetMapping("/getTodosByUserId/{id}")
+    public ResponseEntity<BaseResponse<List<TodoListDTO>>> getTodoById(@PathVariable("id") @Valid @NotNull UUID id){
+        return  new ResponseEntity<BaseResponse<List<TodoListDTO>>>(BaseResponse.success(todoService.getTodosByUserId(id)), HttpStatus.OK);
+    }
+
 }
