@@ -29,4 +29,8 @@ public class Todo extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @JoinColumn(name = "todo_detail_id", referencedColumnName = "id")
     private TodoDetail todoDetail;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id",nullable = false)
+    private  User user;
 }

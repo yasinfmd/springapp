@@ -6,7 +6,7 @@ import com.myworks.mywork.exception.RecordNotFoundException;
 import com.myworks.mywork.models.Todo;
 import com.myworks.mywork.models.TodoDetail;
 import com.myworks.mywork.repository.TodoRepository;
-import com.myworks.mywork.services.MyApiService;
+import com.myworks.mywork.services.TodoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,11 +17,11 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-public class MyApiServiceImp implements MyApiService {
+public class TodoServiceImp implements TodoService {
     private final TodoRepository todoRepository;
 
     @Autowired
-    public MyApiServiceImp(TodoRepository todoRepository) {
+    public TodoServiceImp(TodoRepository todoRepository) {
         this.todoRepository = todoRepository;
     }
 
