@@ -1,6 +1,7 @@
 package com.myworks.mywork.controller;
 
 
+import com.myworks.mywork.annotations.ValidImage;
 import com.myworks.mywork.dto.request.TodoDTO;
 import com.myworks.mywork.dto.response.TodoListDTO;
 import com.myworks.mywork.models.Todo;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -56,6 +58,11 @@ public class TodoController {
 
     }
 
+    @PostMapping("/file")
+    public ResponseEntity createfile(@ValidImage @RequestPart("image") MultipartFile file) {
+        todoService.test(file);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
     @PostMapping("/create")
     public ResponseEntity<BaseResponse<TodoListDTO>> createTodo(@RequestBody @Valid TodoDTO todo) {
