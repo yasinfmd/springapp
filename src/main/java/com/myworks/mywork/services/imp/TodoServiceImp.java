@@ -33,17 +33,13 @@ import java.util.stream.Collectors;
 @Service
 public class TodoServiceImp implements TodoService {
     private final TodoRepository todoRepository;
-    private final FileService fileService;
 
     @Autowired
     public TodoServiceImp(TodoRepository todoRepository, FileService fileService ) {
         this.todoRepository = todoRepository;
-        this.fileService=fileService;
     }
 
-    public  void test(MultipartFile file){
-        this.fileService.store(file);
-    }
+
 
     @Override
     public List<Todo> getTodosByName(String text) {

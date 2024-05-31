@@ -17,7 +17,6 @@ public interface TodoService {
     Todo getTodoById(UUID uuid);
     List<TodoListDTO> getTodos();
 
-    void test(MultipartFile file);
     TodoListDTO createTodo(TodoDTO dto);
 
     List<TodoListDTO> getTodosByUserId(UUID id);

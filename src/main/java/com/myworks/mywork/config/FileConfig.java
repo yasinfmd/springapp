@@ -9,5 +9,6 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class FileConfig {
     private String uploadDir;
+    private String baseUrl;
 
 }

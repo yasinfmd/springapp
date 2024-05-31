@@ -60,7 +60,6 @@ public class TodoController {
 
     @PostMapping("/file")
     public ResponseEntity createfile(@ValidImage @RequestPart("image") MultipartFile file) {
-        todoService.test(file);
         return new ResponseEntity(HttpStatus.OK);
     }
 

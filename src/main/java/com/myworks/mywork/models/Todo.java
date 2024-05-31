@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -41,5 +43,5 @@ public class Todo extends BaseEntity {
 
     @OneToMany(mappedBy = "todo",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference
-    private Set<File> files;
+    private List<File> files=new ArrayList<>();
 }
