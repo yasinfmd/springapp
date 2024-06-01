@@ -4,29 +4,20 @@ import com.myworks.mywork.dto.request.TodoDTO;
 import com.myworks.mywork.dto.request.TodoDetailDTO;
 import com.myworks.mywork.dto.response.TodoDetailListDTO;
 import com.myworks.mywork.dto.response.TodoListDTO;
-import com.myworks.mywork.dto.response.UserListDTO;
+import com.myworks.mywork.dto.response.TodoWithFilesDTO;
 import com.myworks.mywork.exception.RecordNotFoundException;
 import com.myworks.mywork.models.Todo;
 import com.myworks.mywork.models.TodoDetail;
 import com.myworks.mywork.models.User;
 import com.myworks.mywork.repository.TodoRepository;
-import com.myworks.mywork.response.BaseResponse;
 import com.myworks.mywork.services.FileService;
 import com.myworks.mywork.services.TodoService;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -35,11 +26,28 @@ public class TodoServiceImp implements TodoService {
     private final TodoRepository todoRepository;
 
     @Autowired
-    public TodoServiceImp(TodoRepository todoRepository, FileService fileService ) {
+    public TodoServiceImp(TodoRepository todoRepository, FileService fileService) {
         this.todoRepository = todoRepository;
     }
 
 
+    @Override
+    @Transactional(readOnly = true)
+    public TodoWithFilesDTO getTodoWithFiles(UUID uuid) {
+        log.info("Find todos by id : " + uuid);
+        Todo todo = todoRepository.findById(uuid)
+                .orElseThrow(() -> new RecordNotFoundException("Todo not found with id " + uuid));
+        List<Map<String,String>> files=todo.getFiles().stream().map((f)->{
+          Map<String,String> fileMap= new HashMap<>();
+          fileMap.put("id",f.getId().toString());
+          fileMap.put("url",f.getFileUrl());
+      return  fileMap;
+        }).toList();
+
+
+        return new TodoWithFilesDTO(todo.getId(),files);
+
+    }
 
     @Override
     public List<Todo> getTodosByName(String text) {

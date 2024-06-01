@@ -1,14 +1,12 @@
 package com.myworks.mywork.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,6 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Data
 @Entity
+@JsonIgnoreProperties({"files"})
 public class Todo extends BaseEntity {
     @NotNull(message = "Cannot be null")
     @Size(min = 10,max = 150,message = "Min 10 Max 150")
@@ -39,6 +38,7 @@ public class Todo extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",nullable = false)
     private  User user;
+
 
 
     @OneToMany(mappedBy = "todo",cascade = CascadeType.ALL,fetch = FetchType.LAZY)

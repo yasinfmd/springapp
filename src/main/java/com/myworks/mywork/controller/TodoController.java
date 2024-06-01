@@ -4,6 +4,7 @@ package com.myworks.mywork.controller;
 import com.myworks.mywork.annotations.ValidImage;
 import com.myworks.mywork.dto.request.TodoDTO;
 import com.myworks.mywork.dto.response.TodoListDTO;
+import com.myworks.mywork.dto.response.TodoWithFilesDTO;
 import com.myworks.mywork.models.Todo;
 import com.myworks.mywork.response.BaseResponse;
 import com.myworks.mywork.services.TodoService;
@@ -51,6 +52,11 @@ public class TodoController {
     public ResponseEntity<BaseResponse<Todo>> getById(@PathVariable("id") @Valid @NotNull UUID id) {
         return new ResponseEntity<BaseResponse<Todo>>(BaseResponse.success(todoService.getTodoById(id)), HttpStatus.OK);
     }
+    @GetMapping("/{id}/files")
+    public ResponseEntity<BaseResponse<TodoWithFilesDTO>> getTodoByIdWithFiles(@PathVariable("id") @Valid @NotNull UUID id) {
+        return new ResponseEntity<BaseResponse<TodoWithFilesDTO>>(BaseResponse.success(todoService.getTodoWithFiles(id)), HttpStatus.OK);
+    }
+
 
     @GetMapping("/list")
     public ResponseEntity<BaseResponse<List<TodoListDTO>>> getAllTodos() {
