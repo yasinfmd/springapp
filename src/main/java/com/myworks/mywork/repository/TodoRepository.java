@@ -1,6 +1,7 @@
 package com.myworks.mywork.repository;
 
 import com.myworks.mywork.models.Todo;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -16,7 +17,7 @@ import java.util.UUID;
 public interface TodoRepository extends JpaRepository<Todo, UUID> {
     List<Todo> findByTextContaining(String searchText);
 
-
+    Page<Todo> findAll(Specification<Todo> query, Pageable pageable);
 
   //  List<Todo>  findByUserId(UUID userId);
 

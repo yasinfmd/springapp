@@ -105,10 +105,9 @@ public class TodoServiceImp implements TodoService {
     @Override
     public BasePaginationResponse getTodosWithPagination(Optional<String> sortDirection, Optional<String> sortBy, int page, int size) {
         Pageable paging = PageRequest.of(page, size);
-       Page<Todo> todoPage = todoRepository.findAll(paging);
-        List<TodoListDTO> todoListDto=todoPage.getContent().stream().map((todo -> new TodoListDTO(todo.getId(), todo.getVersion(), todo.getTitle(), todo.getText(), todo.getCompleted(), new TodoDetailListDTO(todo.getTodoDetail().getId(), todo.getTodoDetail().getVersion(), todo.getTodoDetail().getDetail())))).collect(Collectors.toList());
-
-        return  BasePaginationResponse.success(todoListDto,todoPage.getNumber(),todoPage.getSize(),todoPage.getTotalElements());
+        Page<Todo> todoPage = todoRepository.findAll(paging);
+        List<TodoListDTO> todoListDto = todoPage.getContent().stream().map((todo -> new TodoListDTO(todo.getId(), todo.getVersion(), todo.getTitle(), todo.getText(), todo.getCompleted(), new TodoDetailListDTO(todo.getTodoDetail().getId(), todo.getTodoDetail().getVersion(), todo.getTodoDetail().getDetail())))).collect(Collectors.toList());
+        return BasePaginationResponse.success(todoListDto, todoPage.getNumber(), todoPage.getSize(), todoPage.getTotalElements());
     }
 
     @Override

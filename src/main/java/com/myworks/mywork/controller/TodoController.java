@@ -73,7 +73,7 @@ public class TodoController {
     @GetMapping("/pageable")
     public ResponseEntity<BasePaginationResponse> getAllTodosWithPagination(@RequestParam Optional<String> sortBy,
                                                                                                @RequestParam Optional<String> sortDirection, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "1") int size) {
-        return new ResponseEntity<BasePaginationResponse>(todoService.getTodosWithPagination(sortDirection, sortBy,page,size), HttpStatus.OK);
+        return new ResponseEntity<BasePaginationResponse>(todoService.getTodosWithPagination(sortDirection, sortBy, page, size), HttpStatus.OK);
     }
 
     @PostMapping("/file")
