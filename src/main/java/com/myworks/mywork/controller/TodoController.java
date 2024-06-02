@@ -2,10 +2,14 @@ package com.myworks.mywork.controller;
 
 
 import com.myworks.mywork.annotations.ValidImage;
+import com.myworks.mywork.dto.request.CreateTodoTagDTO;
 import com.myworks.mywork.dto.request.TodoDTO;
 import com.myworks.mywork.dto.response.TodoListDTO;
+import com.myworks.mywork.dto.response.TodoTagsDTO;
 import com.myworks.mywork.dto.response.TodoWithFilesDTO;
+import com.myworks.mywork.models.Tag;
 import com.myworks.mywork.models.Todo;
+import com.myworks.mywork.response.BasePaginationResponse;
 import com.myworks.mywork.response.BaseResponse;
 import com.myworks.mywork.services.TodoService;
 import jakarta.validation.Valid;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -26,7 +31,6 @@ import java.util.UUID;
 @RequestMapping("/api/todos")
 public class TodoController {
     private final TodoService todoService;
-
 
     @Autowired
     public TodoController(TodoService todoService) {
@@ -52,6 +56,7 @@ public class TodoController {
     public ResponseEntity<BaseResponse<Todo>> getById(@PathVariable("id") @Valid @NotNull UUID id) {
         return new ResponseEntity<BaseResponse<Todo>>(BaseResponse.success(todoService.getTodoById(id)), HttpStatus.OK);
     }
+
     @GetMapping("/{id}/files")
     public ResponseEntity<BaseResponse<TodoWithFilesDTO>> getTodoByIdWithFiles(@PathVariable("id") @Valid @NotNull UUID id) {
         return new ResponseEntity<BaseResponse<TodoWithFilesDTO>>(BaseResponse.success(todoService.getTodoWithFiles(id)), HttpStatus.OK);
@@ -59,9 +64,16 @@ public class TodoController {
 
 
     @GetMapping("/list")
-    public ResponseEntity<BaseResponse<List<TodoListDTO>>> getAllTodos() {
-        return new ResponseEntity<BaseResponse<List<TodoListDTO>>>(BaseResponse.success(todoService.getTodos()), HttpStatus.OK);
+    public ResponseEntity<BaseResponse<List<TodoListDTO>>> getAllTodos(@RequestParam Optional<String> sortBy,
+                                                                       @RequestParam Optional<String> sortDirection) {
+        return new ResponseEntity<BaseResponse<List<TodoListDTO>>>(BaseResponse.success(todoService.getTodos(sortDirection, sortBy)), HttpStatus.OK);
 
+    }
+
+    @GetMapping("/pageable")
+    public ResponseEntity<BasePaginationResponse> getAllTodosWithPagination(@RequestParam Optional<String> sortBy,
+                                                                                               @RequestParam Optional<String> sortDirection, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "1") int size) {
+        return new ResponseEntity<BasePaginationResponse>(todoService.getTodosWithPagination(sortDirection, sortBy,page,size), HttpStatus.OK);
     }
 
     @PostMapping("/file")
@@ -74,9 +86,25 @@ public class TodoController {
         return new ResponseEntity<BaseResponse<TodoListDTO>>(BaseResponse.success(todoService.createTodo(todo)), HttpStatus.CREATED);
     }
 
+    @PostMapping("/createTag")
+    public Object createTodo(@RequestBody @Valid CreateTodoTagDTO todoTagDTO) {
+      /*  long g=20;
+        var a= this.studentService.listStudentCourses(g);
+       return  a;*/
+        return new ResponseEntity<>(BaseResponse.success(todoService.addTagToTodo(todoTagDTO)), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}/tags")
+    public ResponseEntity<BaseResponse<List<TodoTagsDTO>>> getTodoTags(@PathVariable UUID id) {
+        return new ResponseEntity<BaseResponse<List<TodoTagsDTO>>>(BaseResponse.success(todoService.getTodoTags(id)), HttpStatus.OK);
+    }
+
+    /*
     @GetMapping("/getTodosByUserId/{id}")
     public ResponseEntity<BaseResponse<List<TodoListDTO>>> getTodoById(@PathVariable("id") @Valid @NotNull UUID id){
         return  new ResponseEntity<BaseResponse<List<TodoListDTO>>>(BaseResponse.success(todoService.getTodosByUserId(id)), HttpStatus.OK);
     }
+
+     */
 
 }
