@@ -29,6 +29,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping("/api/todos")
+@CrossOrigin(origins = "*")
 public class TodoController {
     private final TodoService todoService;
 

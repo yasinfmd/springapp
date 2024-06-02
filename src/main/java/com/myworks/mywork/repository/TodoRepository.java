@@ -19,6 +19,10 @@ public interface TodoRepository extends JpaRepository<Todo, UUID> {
 
     Page<Todo> findAll(Specification<Todo> query, Pageable pageable);
 
+    @Query("SELECT t FROM todo t WHERE t.title = :title ")
+    Page<Todo> findByTitle(String title, Pageable pageable);
+
+
   //  List<Todo>  findByUserId(UUID userId);
 
 }
