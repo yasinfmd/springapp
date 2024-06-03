@@ -100,7 +100,6 @@ public class TodoServiceImp implements TodoService {
     public List<TodoListDTO> getTodos(Optional<String> sortDirection, Optional<String> sortBy) {
         log.info("Todo List access");
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection.orElse("asc")), sortBy.orElse("title"));
-
         return todoRepository.findAll(sort).stream().map((todo -> new TodoListDTO(todo.getId(), todo.getVersion(), todo.getTitle(), todo.getText(), todo.getCompleted(), new TodoDetailListDTO(todo.getTodoDetail().getId(), todo.getTodoDetail().getVersion(), todo.getTodoDetail().getDetail())))).collect(Collectors.toList());
     }
 
