@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,6 +22,8 @@ import java.util.Set;
 @Setter
 @Entity
 @JsonIgnoreProperties({"files"})
+@SQLDelete(sql = "UPDATE todo SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class Todo extends BaseEntity {
     @NotNull(message = "Cannot be null")
     @Size(min = 10, max = 150, message = "Min 10 Max 150")
@@ -30,6 +34,8 @@ public class Todo extends BaseEntity {
     private String text;
     @NotNull(message = "Cannot be null")
     private Boolean completed;
+
+    private Boolean deleted=false;
 
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)

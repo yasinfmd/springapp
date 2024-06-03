@@ -71,7 +71,9 @@ public class TodoServiceImp implements TodoService {
     @Override
     public Boolean deleteTodoById(UUID uuid) {
         log.info("Find todo by id : " + uuid);
-        todoRepository.deleteById(uuid);
+        Todo updateTodo = todoRepository.findById(uuid).orElseThrow(() -> new RecordNotFoundException("Todo not found"));
+        updateTodo.setDeleted(true);
+        todoRepository.save(updateTodo);
         return true;
     }
 
