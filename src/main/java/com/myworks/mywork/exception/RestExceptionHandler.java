@@ -3,6 +3,7 @@ package com.myworks.mywork.exception;
 import com.myworks.mywork.error.BaseError;
 import com.myworks.mywork.error.ValidationError;
 import com.myworks.mywork.error.ValidationErrorResponse;
+import com.myworks.mywork.utils.MessageHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -54,7 +55,7 @@ public class RestExceptionHandler {
     }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<BaseError> handleAllExceptions(Exception ex, HttpServletRequest request) {
-        return new ResponseEntity<>(BaseError.of(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),ex.getMessage(),request.getRequestURI()), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(BaseError.of(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), MessageHelper.getMessage("error.local.message"),request.getRequestURI()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 

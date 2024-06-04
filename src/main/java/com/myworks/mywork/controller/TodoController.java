@@ -12,11 +12,15 @@ import com.myworks.mywork.models.Todo;
 import com.myworks.mywork.response.BasePaginationResponse;
 import com.myworks.mywork.response.BaseResponse;
 import com.myworks.mywork.services.TodoService;
+import com.myworks.mywork.utils.MessageHelper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.bridge.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,10 +36,11 @@ import java.util.UUID;
 @CrossOrigin(origins = "*")
 public class TodoController {
     private final TodoService todoService;
-
+    private final MessageSource messageSource;
     @Autowired
-    public TodoController(TodoService todoService) {
+    public TodoController(TodoService todoService, MessageSource messageSource) {
         this.todoService = todoService;
+        this.messageSource=messageSource;
     }
 
     @PutMapping("/updateById/{id}")
