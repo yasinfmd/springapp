@@ -19,6 +19,11 @@ import com.myworks.mywork.services.FileService;
 import com.myworks.mywork.services.TodoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -36,11 +41,13 @@ import java.util.stream.Collectors;
 public class TodoServiceImp implements TodoService {
     private final TodoRepository todoRepository;
     private final TagRepository tagRepository;
+    private final CacheManager cacheManager;
 
     @Autowired
-    public TodoServiceImp(TodoRepository todoRepository, TagRepository tagRepository) {
+    public TodoServiceImp(TodoRepository todoRepository, TagRepository tagRepository,CacheManager cacheManager) {
         this.todoRepository = todoRepository;
         this.tagRepository = tagRepository;
+        this.cacheManager=cacheManager;
     }
 
 
@@ -68,7 +75,9 @@ public class TodoServiceImp implements TodoService {
         return todoRepository.findByTextContaining(text);
     }
 
+    @Transactional
     @Override
+    @CacheEvict(value = "todos", key = "#uuid")
     public Boolean deleteTodoById(UUID uuid) {
         log.info("Find todo by id : " + uuid);
         Todo updateTodo = todoRepository.findById(uuid).orElseThrow(() -> new RecordNotFoundException("Todo not found"));
@@ -79,6 +88,7 @@ public class TodoServiceImp implements TodoService {
 
     @Override
     @Transactional
+    @CachePut(value = "todoCache", key = "#uuid")
     public Todo updateTodoById(UUID uuid, Todo todo) {
         log.info("Find todo by id : " + uuid);
         Todo updateTodo = todoRepository.findById(uuid).orElseThrow(() -> new RecordNotFoundException("Todo not found"));
@@ -90,6 +100,7 @@ public class TodoServiceImp implements TodoService {
     }
 
     @Override
+    @Cacheable(value = "todos",key = "#uuid")
     public Todo getTodoById(UUID uuid) {
         log.info("Find todo by id : " + uuid);
         return todoRepository.findById(uuid).orElseThrow(() -> new RecordNotFoundException("Todo not found"));
@@ -97,18 +108,11 @@ public class TodoServiceImp implements TodoService {
 
     @Transactional(readOnly = true)
     @Override
+    @Cacheable("todos")
     public List<TodoListDTO> getTodos(Optional<String> sortDirection, Optional<String> sortBy) {
         log.info("Todo List access");
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection.orElse("asc")), sortBy.orElse("title"));
         return todoRepository.findAll(sort).stream().map((todo -> new TodoListDTO(todo.getId(), todo.getVersion(), todo.getTitle(), todo.getText(), todo.getCompleted(), new TodoDetailListDTO(todo.getTodoDetail().getId(), todo.getTodoDetail().getVersion(), todo.getTodoDetail().getDetail())))).collect(Collectors.toList());
-    }
-
-    @Override
-    public BasePaginationResponse getTodosWithPagination(Optional<String> sortDirection, Optional<String> sortBy, int page, int size) {
-        Pageable paging = PageRequest.of(page, size);
-        Page<Todo> todoPage = todoRepository.findAll(paging);
-        List<TodoListDTO> todoListDto = todoPage.getContent().stream().map((todo -> new TodoListDTO(todo.getId(), todo.getVersion(), todo.getTitle(), todo.getText(), todo.getCompleted(), new TodoDetailListDTO(todo.getTodoDetail().getId(), todo.getTodoDetail().getVersion(), todo.getTodoDetail().getDetail())))).collect(Collectors.toList());
-        return BasePaginationResponse.success(todoListDto, todoPage.getNumber(), todoPage.getSize(), todoPage.getTotalElements());
     }
 
     @Override
@@ -129,11 +133,25 @@ public class TodoServiceImp implements TodoService {
             todo.setUser(user);
             */
             Todo savedTodo = todoRepository.save(todo);
+            Cache todoListCache=cacheManager.getCache("todos");
+            if(todoListCache != null){
+                todoListCache.evict("todos");
+            }
             return new TodoListDTO(savedTodo.getId(), savedTodo.getVersion(), savedTodo.getTitle(), savedTodo.getText(), savedTodo.getCompleted(), new TodoDetailListDTO(savedTodo.getTodoDetail().getId(), savedTodo.getTodoDetail().getVersion(), savedTodo.getTodoDetail().getDetail()));
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    @Override
+    public BasePaginationResponse getTodosWithPagination(Optional<String> sortDirection, Optional<String> sortBy, int page, int size) {
+        Pageable paging = PageRequest.of(page, size);
+        Page<Todo> todoPage = todoRepository.findAll(paging);
+        List<TodoListDTO> todoListDto = todoPage.getContent().stream().map((todo -> new TodoListDTO(todo.getId(), todo.getVersion(), todo.getTitle(), todo.getText(), todo.getCompleted(), new TodoDetailListDTO(todo.getTodoDetail().getId(), todo.getTodoDetail().getVersion(), todo.getTodoDetail().getDetail())))).collect(Collectors.toList());
+        return BasePaginationResponse.success(todoListDto, todoPage.getNumber(), todoPage.getSize(), todoPage.getTotalElements());
+    }
+
+
 
     @Override
     @Transactional
