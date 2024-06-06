@@ -1,5 +1,6 @@
 package com.myworks.mywork.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,10 +22,12 @@ public class BaseEntity {
     @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
+    @JsonIgnore
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;
 
+    @JsonIgnore
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
 
