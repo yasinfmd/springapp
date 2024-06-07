@@ -6,6 +6,7 @@ import com.myworks.mywork.error.ValidationErrorResponse;
 import com.myworks.mywork.utils.MessageHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -41,23 +42,25 @@ public class RestExceptionHandler {
     }
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<BaseError> handleRuntimeException(Exception ex, HttpServletRequest request) {
+        log.info(MessageHelper.getMessage("error.local.message"), MDC.get("traceId"), ex,request.getRequestURI());
         return new ResponseEntity<>(BaseError.of(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),ex.getMessage(),request.getRequestURI()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<BaseError> handleBadRequestException(Exception ex, HttpServletRequest request) {
+        log.info(MessageHelper.getMessage("error.local.message"), MDC.get("traceId"), ex,request.getRequestURI());
         return new ResponseEntity<>(BaseError.of(HttpStatus.BAD_REQUEST.getReasonPhrase(),ex.getMessage(),request.getRequestURI()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(RecordNotFoundException.class)
     public ResponseEntity<BaseError> handleRecordNotFoundException(Exception ex, HttpServletRequest request) {
+        log.info(MessageHelper.getMessage("error.local.message"), MDC.get("traceId"), ex,request.getRequestURI(),request.getParameterMap());
         return new ResponseEntity<>(BaseError.of(HttpStatus.NOT_FOUND.getReasonPhrase(),ex.getMessage(),request.getRequestURI()), HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<BaseError> handleAllExceptions(Exception ex, HttpServletRequest request) {
-        log.info("hataaa: ", ex);
-        log.error("hataaa eerr: ", ex);
-        log.debug("hataa debuga: ", ex);
+        log.info(MessageHelper.getMessage("error.local.message"), MDC.get("traceId"), ex,request.getRequestURI());
+
 
         return new ResponseEntity<>(BaseError.of(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), MessageHelper.getMessage("error.local.message"),request.getRequestURI()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
