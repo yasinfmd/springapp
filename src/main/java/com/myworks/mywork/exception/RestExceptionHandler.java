@@ -55,6 +55,10 @@ public class RestExceptionHandler {
     }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<BaseError> handleAllExceptions(Exception ex, HttpServletRequest request) {
+        log.info("hataaa: ", ex);
+        log.error("hataaa eerr: ", ex);
+        log.debug("hataa debuga: ", ex);
+
         return new ResponseEntity<>(BaseError.of(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), MessageHelper.getMessage("error.local.message"),request.getRequestURI()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
