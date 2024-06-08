@@ -112,8 +112,13 @@ public class TodoControllerTest {
 
         // Perform GET Request
         mockMvc.perform(get(ENDPOINT_PATH + "list").param("sortDirection","asc").param("sortBy","title"))
-                .andExpect(status().isOk());
-
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").exists())
+                .andExpect(jsonPath("$.data[0].title").value("title"))
+                .andExpect(jsonPath("$.data.length()").value(todos.size()))
+                .andExpect(jsonPath("$.message").value("success"))
+                .andExpect(jsonPath("$.success").value(true))
+        ;
         verify(todoService, times(1)).getTodos(eq(Optional.of("asc")), eq(Optional.of("title")));
 
     }
