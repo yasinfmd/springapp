@@ -29,6 +29,8 @@ public interface TodoService {
 
     List<TodoListDTO> getTodos(Optional<String> sortDirection, Optional<String> sortBy);
 
+
+
     BasePaginationResponse getTodosWithPagination(Optional<String> sortDirection, Optional<String> sortBy , int page, int pageSize);
 
 
@@ -37,5 +39,6 @@ public interface TodoService {
     Boolean addTagToTodo(CreateTodoTagDTO dto);
 
     List<TodoTagsDTO> getTodoTags(UUID id);
-  //  List<TodoListDTO> getTodosByUserId(UUID id);
+
+    //  List<TodoListDTO> getTodosByUserId(UUID id);
 }

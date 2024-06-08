@@ -1,5 +1,6 @@
 package com.myworks.mywork.config;
 
+import com.myworks.mywork.interceptors.LoggingInterceptor;
 import com.myworks.mywork.interceptors.TraceIdInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-        registry.addInterceptor(new TraceIdInterceptor());
+        registry.addInterceptor(new TraceIdInterceptor()).addPathPatterns("/api/**");
+        registry.addInterceptor(new LoggingInterceptor()).addPathPatterns("/**");
     }
 }

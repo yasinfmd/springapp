@@ -70,11 +70,12 @@ public class TodoController {
 
 
     @GetMapping("/list")
-    public ResponseEntity<BaseResponse<List<TodoListDTO>>> getAllTodos(@RequestParam Optional<String> sortBy,
-                                                                       @RequestParam Optional<String> sortDirection) {
+    public ResponseEntity<BaseResponse<List<TodoListDTO>>> getAllTodos( @RequestParam Optional<String> sortDirection ,@RequestParam Optional<String> sortBy
+                                                                      ) {
         return new ResponseEntity<BaseResponse<List<TodoListDTO>>>(BaseResponse.success(todoService.getTodos(sortDirection, sortBy)), HttpStatus.OK);
 
     }
+
 
     @GetMapping("/pageable")
     public ResponseEntity<BasePaginationResponse> getAllTodosWithPagination(@RequestParam Optional<String> sortBy,
