@@ -1,11 +1,12 @@
 package com.myworks.mywork;
 
+import com.myworks.mywork.config.SecurityConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableJpaAuditing
-@SpringBootApplication
+@SpringBootApplication(exclude = SecurityConfig.class)
 public class MyworkApplication {
 
 	public static void main(String[] args) {

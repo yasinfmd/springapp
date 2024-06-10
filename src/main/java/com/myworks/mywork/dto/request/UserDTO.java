@@ -1,6 +1,7 @@
 package com.myworks.mywork.dto.request;
 
 import com.myworks.mywork.annotations.PasswordValidation;
+import com.myworks.mywork.annotations.UniqueEmail;
 import jakarta.validation.constraints.*;
 
 public record UserDTO(
@@ -16,6 +17,7 @@ public record UserDTO(
         @NotNull(message = "Email  cannot be null")
         @NotEmpty(message = "Email  cannot be empty")
         @Email(message = "Email is not correct format")
+        @UniqueEmail(message = "User exist")
         String email,
         @NotNull(message = "Password  cannot be null")
         @NotEmpty(message = "Password  cannot be empty")
