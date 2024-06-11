@@ -15,4 +15,5 @@ public @interface UniqueEmail {
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
+    String fieldName();
 }
