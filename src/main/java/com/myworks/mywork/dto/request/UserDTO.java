@@ -17,7 +17,7 @@ public record UserDTO(
         @NotNull(message = "Email  cannot be null")
         @NotEmpty(message = "Email  cannot be empty")
         @Email(message = "Email is not correct format")
-        @UniqueEmail(message = "User exist")
+        @UniqueEmail(message = "User exist", fieldName = "email")
         String email,
         @NotNull(message = "Password  cannot be null")
         @NotEmpty(message = "Password  cannot be empty")
