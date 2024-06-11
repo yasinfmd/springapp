@@ -1,5 +1,6 @@
 package com.myworks.mywork.services.imp;
 
+import com.myworks.mywork.dto.request.AuthDTO;
 import com.myworks.mywork.dto.request.TodoDTO;
 import com.myworks.mywork.dto.request.UserDTO;
 import com.myworks.mywork.dto.response.TodoListDTO;
@@ -56,6 +57,11 @@ public class UserServiceImp implements UserService {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    @Override
+    public String auth(AuthDTO authDTO) {
+        return "ooo";
     }
 
 

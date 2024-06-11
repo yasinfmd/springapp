@@ -1,5 +1,6 @@
 package com.myworks.mywork.controller;
 
+import com.myworks.mywork.dto.request.AuthDTO;
 import com.myworks.mywork.dto.request.UserDTO;
 import com.myworks.mywork.dto.response.TodoListDTO;
 import com.myworks.mywork.dto.response.UserListDTO;
@@ -31,12 +32,17 @@ public class UserController {
 
 
     @GetMapping("/list")
-    public ResponseEntity<BaseResponse<List<UserListDTO>>> register(){
+    public ResponseEntity<BaseResponse<List<UserListDTO>>> list(){
         return  new ResponseEntity<BaseResponse<List<UserListDTO>>>(BaseResponse.success(userService.getUsers()), HttpStatus.OK);
     }
 
     @PostMapping("/create")
     public ResponseEntity<BaseResponse<Boolean>> register(@RequestBody @Valid UserDTO userDTO){
         return  new ResponseEntity<BaseResponse<Boolean>>(BaseResponse.success(userService.register(userDTO)), HttpStatus.OK);
+    }
+
+    @PostMapping("/auth")
+    public ResponseEntity<BaseResponse<Boolean>> auth(@RequestBody @Valid AuthDTO authDTO){
+        return  new ResponseEntity<BaseResponse<Boolean>>(BaseResponse.success(userService.auth(authDTO)), HttpStatus.OK);
     }
 }

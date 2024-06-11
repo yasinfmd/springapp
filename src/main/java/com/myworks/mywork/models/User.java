@@ -1,6 +1,5 @@
 package com.myworks.mywork.models;
 
-import com.myworks.mywork.annotations.UniqueEmail;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.*;
@@ -14,7 +13,6 @@ public class User extends BaseEntity {
 
     private String username;
 
-    @UniqueEmail
     private String email;
 
 
