@@ -13,6 +13,9 @@ import com.myworks.mywork.services.UserService;
 import com.myworks.mywork.utils.PasswordHasher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,6 +60,15 @@ public class UserServiceImp implements UserService {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+    @Transactional
+    public UserDetailsService userDetailsService(){
+        return  new UserDetailsService() {
+            @Override
+            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+                return userRepository.findByUsername(username);
+            }
+        };
     }
 
     @Override
