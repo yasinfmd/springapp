@@ -2,6 +2,8 @@ package com.myworks.mywork.dto.request;
 
 import com.myworks.mywork.annotations.PasswordValidation;
 import com.myworks.mywork.annotations.UniqueUser;
+import com.myworks.mywork.annotations.ValidRole;
+import com.myworks.mywork.enums.Role;
 import jakarta.validation.constraints.*;
 
 public record UserDTO(
@@ -25,7 +27,10 @@ public record UserDTO(
         @NotBlank(message = "Password cannot be blank")
         @Size(min = 8)
         @PasswordValidation
-        String password
+        String password,
+        @NotNull(message = "Role cannot be null")
+        @ValidRole
+        Role role
 
 ) {
 }

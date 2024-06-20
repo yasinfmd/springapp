@@ -6,6 +6,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Method;
+import java.util.Optional;
 
 public class UniqueUserValidator implements ConstraintValidator<UniqueUser, String> {
 
@@ -27,7 +28,11 @@ public class UniqueUserValidator implements ConstraintValidator<UniqueUser, Stri
         try {
             Method method = userRepository.getClass().getMethod("findBy" + capitalize(this.fieldName), String.class);
             Object result = method.invoke(userRepository, val);
-            return result == null;
+            if (result instanceof Optional) {
+                return ((Optional<?>) result).isEmpty();
+            }
+            return  result==null;
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

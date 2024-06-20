@@ -3,9 +3,9 @@ package com.myworks.mywork.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class BadRequestException extends RuntimeException {
-    public BadRequestException(String message) {
+@ResponseStatus(value = HttpStatus.FORBIDDEN)
+public class AccessDeniedException extends RuntimeException {
+    public AccessDeniedException(String message) {
         super(message);
     }
 }

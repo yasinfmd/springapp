@@ -1,15 +1,20 @@
 package com.myworks.mywork.models;
 
+import com.myworks.mywork.enums.Role;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,6 +33,10 @@ public class User extends BaseEntity implements UserDetails {
 
     private String fullName;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+
     public String getFullName() {
         return this.name + " " + this.surname;
     }
@@ -43,8 +52,9 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return  role.getAuthorities();
     }
+
 
     @Override
     public boolean isAccountNonExpired() {

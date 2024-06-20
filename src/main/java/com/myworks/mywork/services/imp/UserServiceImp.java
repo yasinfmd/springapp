@@ -1,45 +1,43 @@
 package com.myworks.mywork.services.imp;
 
-import com.myworks.mywork.dto.request.AuthDTO;
-import com.myworks.mywork.dto.request.TodoDTO;
+import com.myworks.mywork.dto.request.SigninRequest;
 import com.myworks.mywork.dto.request.UserDTO;
-import com.myworks.mywork.dto.response.TodoListDTO;
+import com.myworks.mywork.dto.response.SigninResponse;
 import com.myworks.mywork.dto.response.UserListDTO;
 import com.myworks.mywork.exception.RecordNotFoundException;
-import com.myworks.mywork.models.Todo;
+import com.myworks.mywork.exception.UnauthorizedException;
 import com.myworks.mywork.models.User;
 import com.myworks.mywork.repository.UserRepository;
 import com.myworks.mywork.services.UserService;
-import com.myworks.mywork.utils.PasswordHasher;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserServiceImp implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordHasher passwordHasher;
-
-    @Autowired
-    public UserServiceImp(UserRepository userRepository, PasswordHasher passwordHasher) {
-        this.userRepository = userRepository;
-        this.passwordHasher = passwordHasher;
-    }
+    private final PasswordEncoder passwordEncoder;
+    @Lazy
+    private final AuthenticationManager authenticationManager;
+    @Lazy
+    private final JWTServiceImp jwtService;
 
 
     @Override
     public List<UserListDTO> getUsers() {
-        return userRepository.findAll().stream().map((user -> new UserListDTO(user.getId(), "@"+user.getUsername(), user.getName(), user.getSurname(), user.getFullName(), user.getEmail()))).collect(Collectors.toList());
+        return userRepository.findAll().stream().map((user -> new UserListDTO(user.getId(), "@" + user.getUsername(), user.getName(), user.getSurname(), user.getFullName(), user.getEmail()))).collect(Collectors.toList());
 
     }
 
@@ -54,26 +52,26 @@ public class UserServiceImp implements UserService {
             user.setSurname(dto.lastName());
             user.setEmail(dto.email());
             user.setFullName();
-            user.setPassword(passwordHasher.hashPassword(dto.password()));
+            user.setPassword(this.passwordEncoder.encode(dto.password()));
+            user.setRole(dto.role());
             userRepository.save(user);
             return true;
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
     }
-    @Transactional
-    public UserDetailsService userDetailsService(){
-        return  new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return userRepository.findByUsername(username);
-            }
-        };
-    }
+
 
     @Override
-    public String auth(AuthDTO authDTO) {
-        return "ooo";
+    public SigninResponse auth(SigninRequest signinRequestDTO) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinRequestDTO.username(), signinRequestDTO.password()));
+        User user = userRepository.findByUsername(signinRequestDTO.username()).orElseThrow(() -> new UnauthorizedException("Username or password inccorrret"));
+        String token = jwtService.generateToken(user);
+        String refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
+
+
+        return new SigninResponse(token, refreshToken, user.getUsername(), user.getFullName());
+
     }
 
 

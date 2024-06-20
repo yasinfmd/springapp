@@ -1,0 +1,12 @@
+<configuration>
+<!--    <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
+<!--        <destination>localhost:5000</destination> &lt;!&ndash; Logstash TCP portu &ndash;&gt;-->
+<!--        <encoder class="net.logstash.logback.encoder.LogstashEncoder">-->
+<!--            <customFields>{"traceId":"%X{traceId}"}</customFields>-->
+<!--        </encoder>-->
+<!--    </appender>-->
+
+<!--    <root level="INFO">-->
+<!--        <appender-ref ref="logstash"/>-->
+<!--    </root>-->
+</configuration>

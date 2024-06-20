@@ -57,11 +57,24 @@ public class RestExceptionHandler {
         log.info(MessageHelper.getMessage("error.local.message"), MDC.get("traceId"), ex,request.getRequestURI(),request.getParameterMap());
         return new ResponseEntity<>(BaseError.of(HttpStatus.NOT_FOUND.getReasonPhrase(),ex.getMessage(),request.getRequestURI()), HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<BaseError> handleUnauthException(Exception ex, HttpServletRequest request) {
+        log.info(MessageHelper.getMessage("error.local.message"), MDC.get("traceId"), ex,request.getRequestURI());
+
+        return new ResponseEntity<>(BaseError.of(HttpStatus.UNAUTHORIZED.getReasonPhrase(), MessageHelper.getMessage("error.local.message"),request.getRequestURI()), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<BaseError> handleAccessDeniedException(Exception ex, HttpServletRequest request) {
+        log.info(MessageHelper.getMessage("error.local.message"), MDC.get("traceId"), ex,request.getRequestURI());
+
+        return new ResponseEntity<>(BaseError.of(HttpStatus.FORBIDDEN.getReasonPhrase(), MessageHelper.getMessage("error.local.message"),request.getRequestURI()), HttpStatus.FORBIDDEN);
+    }
+
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<BaseError> handleAllExceptions(Exception ex, HttpServletRequest request) {
         log.info(MessageHelper.getMessage("error.local.message"), MDC.get("traceId"), ex,request.getRequestURI());
-
-
         return new ResponseEntity<>(BaseError.of(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), MessageHelper.getMessage("error.local.message"),request.getRequestURI()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
