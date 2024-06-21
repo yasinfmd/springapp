@@ -65,6 +65,7 @@ public class SecurityConfig {
                         authentication
                                 .requestMatchers(protectedUrls).authenticated()
                                 .requestMatchers(WHITE_LIST_URL).permitAll()
+                                .requestMatchers("/gs-guide-websocket").permitAll()
                                 .anyRequest().permitAll()
 
                 )
