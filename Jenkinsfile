@@ -1,8 +1,8 @@
 pipeline {
-    agent {
-        node {
-            label 'maven'
-        }
+    agent any
+
+    tools {
+        maven:'3.9.8'
     }
 
     stages {
