@@ -1,8 +1,8 @@
 pipeline {
-
-   agent any
-    tools {
-        maven "Maven3"
+    agent {
+        node {
+            label 'maven'
+        }
     }
 
     stages {
