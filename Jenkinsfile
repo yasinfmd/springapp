@@ -1,29 +1,24 @@
 pipeline {
-    agent any
 
+    agent{
+        node{
+            label:'maven'
+        }
+    }
     stages {
-        stage('Build') {
+        stage('deneme') {
             steps {
-                script {
-                    def mvnHome = tool name: 'M3', type: 'maven'
-                    sh "${mvnHome}/bin/mvn clean install"
-                }
+                   echo "Java VERSION"
+                sh 'java -version'
+                echo "Maven VERSION"
+                sh 'mvn -version'
+                echo 'building project...'
+                sh "mvn compile"
+                sh "mvn package"
+                //sh "mvn test"
+                sh "mvn clean install"
             }
         }
-        stage('Test') {
-            steps {
-                script {
-                    def mvnHome = tool name: 'M3', type: 'maven'
-                    sh "${mvnHome}/bin/mvn test"
-                }
-            }
-        }
-        stage('Deploy') {
-            steps {
-                script {
-                    echo 'Deploying...'
-                }
-            }
-        }
+    
     }
 }
