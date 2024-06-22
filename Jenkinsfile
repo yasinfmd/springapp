@@ -1,14 +1,15 @@
 pipeline {
 
-    agent {
-        node {
-            label:'maven'
-        }
+   agent any
+    tools {
+        jdk 'jdk'
+        maven "Maven3"
     }
+
     stages {
         stage('deneme') {
             steps {
-                   echo "Java VERSION"
+                 echo "Java VERSION"
                 sh 'java -version'
                 echo "Maven VERSION"
                 sh 'mvn -version'
