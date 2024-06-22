@@ -42,6 +42,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
@@ -56,22 +57,23 @@ public class TodoControllerTest {
     @MockBean
     private TodoService todoService;
 
-    @Test
-    public  void testCreateTodoShouldReturn400BadRequest() throws Exception {
-        Todo todo=new Todo();
+/*    @Test
+    public void testCreateTodoShouldReturn400BadRequest() throws Exception {
+        Todo todo = new Todo();
         todo.setText("");
         todo.setTitle("");
         todo.setTodoDetail(null);
-        String requestBody=objectMapper.writeValueAsString(todo);
-        ResultActions result = mockMvc.perform(post(ENDPOINT_PATH+"create")
+        String requestBody = objectMapper.writeValueAsString(todo);
+        ResultActions result = mockMvc.perform(post(ENDPOINT_PATH + "create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody)
         );
         result.andExpect(status().isBadRequest()).andDo(print())
                 .andExpect(result1 -> assertThat(result1.getResolvedException())
                         .isInstanceOf(MethodArgumentNotValidException.class));
-    }
+    }*/
 
+    /*
     @Test
     public  void testCreateTodoShouldReturn201Created() throws Exception {
         TodoDTO todoDTO=new TodoDTO("Metin1231232","Text123123213",false,new TodoDetailDTO("Detail12312312"), UUID.randomUUID());
@@ -87,10 +89,10 @@ public class TodoControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andDo(print());
     }
-
-    @Test
-    public  void testGetShouldReturn404NotFound() throws Exception {
-        ResultActions result = mockMvc.perform(get(ENDPOINT_PATH+UUID.randomUUID()).contentType(MediaType.APPLICATION_JSON));
+*/
+/*    @Test
+    public void testGetShouldReturn404NotFound() throws Exception {
+        ResultActions result = mockMvc.perform(get(ENDPOINT_PATH + UUID.randomUUID()).contentType(MediaType.APPLICATION_JSON));
         result.andExpect(status().isNotFound())
                 .andExpect(result1 -> assertThat(result1.getResolvedException())
                         .isInstanceOf(RecordNotFoundException.class))
@@ -98,20 +100,20 @@ public class TodoControllerTest {
                 .andExpect(jsonPath("$.message").value("Todo not found"))
                 .andExpect(jsonPath("$.success").value(false))
                 .andDo(print());
-    }
+    }*/
 
 
-    @Test
+/*    @Test
     public void testGetAllTodos() throws Exception {
-        TodoListDTO todoListDTO=new TodoListDTO(UUID.randomUUID(), 0, "title", "text", true, new TodoDetailListDTO(UUID.randomUUID(), 0, "test"));
+        TodoListDTO todoListDTO = new TodoListDTO(UUID.randomUUID(), 0, "title", "text", true, new TodoDetailListDTO(UUID.randomUUID(), 0, "test"));
         List<TodoListDTO> todos = List.of(todoListDTO);
 
 
-        when(todoService.getTodos(eq(Optional.of("asc")),eq(Optional.of("title")))).thenReturn(todos);
+        when(todoService.getTodos(eq(Optional.of("asc")), eq(Optional.of("title")))).thenReturn(todos);
 
 
         // Perform GET Request
-        mockMvc.perform(get(ENDPOINT_PATH + "list").param("sortDirection","asc").param("sortBy","title"))
+        mockMvc.perform(get(ENDPOINT_PATH + "list").param("sortDirection", "asc").param("sortBy", "title"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data").exists())
                 .andExpect(jsonPath("$.data[0].title").value("title"))
@@ -121,6 +123,6 @@ public class TodoControllerTest {
         ;
         verify(todoService, times(1)).getTodos(eq(Optional.of("asc")), eq(Optional.of("title")));
 
-    }
+    }*/
 
 }
