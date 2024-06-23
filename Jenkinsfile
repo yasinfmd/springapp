@@ -38,12 +38,7 @@ pipeline {
                 }
         }
 
-         stage('Package') {
-                 steps {
-                        echo "Package"
-                        sh "mvn package"
-                 }
-         }
+
 
                stage('Clean and Install') {
                           steps {
