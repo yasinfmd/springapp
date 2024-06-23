@@ -13,7 +13,7 @@ pipeline {
                                     def branch = 'main'
                                     echo "Git branch ${branch}  pulling ..."
                                     checkout([$class: 'GitSCM', branches: [[name: "refs/heads/${branch}"]], userRemoteConfigs: [[url: 'https://github.com/yasinfmd/springapp.git']]])
-                                    echo "Son commit mesajı: ${env.GIT_COMMIT}"
+                                    echo "Last commit msg: ${env.GIT_COMMIT}"
                                 }
 
                 }
