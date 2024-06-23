@@ -14,7 +14,11 @@ pipeline {
                                     echo "Git branch ${branch}  pulling ..."
                                     checkout([$class: 'GitSCM', branches: [[name: "refs/heads/${branch}"]], userRemoteConfigs: [[url: 'https://github.com/yasinfmd/springapp.git']]])
                                     echo "Last commit msg: ${env.GIT_COMMIT}"
-                                    echo "Commiter : ${env.GIT_AUTHOR}"
+                                    def gitCommit = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                                    def gitAuthor = sh(script: "git show -s --format='%an <%ae>' ${gitCommit}", returnStdout: true).trim()
+
+                                   echo "Last commit ID: ${gitCommit}"
+                                   echo "Author: ${gitAuthor}"
                                 }
 
                 }
